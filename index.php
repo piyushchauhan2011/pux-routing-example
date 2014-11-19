@@ -34,6 +34,9 @@ class ProductController {
       $posts[] = $row;
     }
 
+    // Works only if mysqlnd is present
+    //$posts = mysqli_fetch_all($res, MYSQLI_ASSOC);
+
     echo json_encode($posts);
 
   }
