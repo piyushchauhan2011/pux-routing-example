@@ -29,9 +29,12 @@ class ProductController {
     //echo json_encode($post->export());
     global $mysqli;
     $res = mysqli_query($mysqli, "SELECT * FROM posts");
-    $row = mysqli_fetch_assoc($res);
+    $posts = array();
+    while($row = mysqli_fetch_assoc($res)) {
+      $posts[] = $row;
+    }
 
-    echo json_encode($row);
+    echo json_encode($posts);
 
   }
   public function listAction() {
