@@ -19,7 +19,7 @@ class ProductController {
     //$id = R::store($post);       //Create or Update
     //$post = R::load('post',$id); //Retrieve
     //R::trash($post);             //Delete
-    
+
     $arr = array(
       'name' => 'Piyush',
       'age'  => 24
@@ -40,7 +40,7 @@ class ProductController {
   public function listAction() {
     echo 'product list';
   }
-  public function itemAction($id) { 
+  public function itemAction($id) {
     echo "product $id";
   }
 }
