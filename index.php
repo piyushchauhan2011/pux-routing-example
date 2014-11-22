@@ -100,6 +100,21 @@ class WineController {
       echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
   }
+  public function searchAction($query) {
+    $sql = "SELECT * FROM wines WHERE UPPER(name) LIKE :query ORDER BY name";
+    try {
+      $db = $this->dbh;
+      $stmt = $db->prepare($sql);
+      $query = "%".$query."%";
+      $stmt->bindParam("query", $query);
+      $stmt->execute();
+      $wines = $stmt->fetchAll(PDO::FETCH_OBJ);
+      $db = null;
+      echo '{"wines": ' . json_encode($wines) . '}';
+    } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+  }
 }
 
 // Routing Variable
@@ -112,6 +127,7 @@ $mux->get('/wines/:id', ['WineController', 'showAction']);
 $mux->post('/wines', ['WineController', 'createAction']);
 $mux->put('/wines/:id', ['WineController', 'updateAction']);
 $mux->delete('/wines/:id', ['WineController', 'destroyAction']);
+$mux->get('/wines/search/:query', ['WineController', 'searchAction']);
 
 // General Stuff for starting Pux application
 if (!isset($_SERVER['PATH_INFO'])) {
