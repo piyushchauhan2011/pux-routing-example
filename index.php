@@ -64,6 +64,42 @@ class WineController {
       echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
   }
+  public function updateAction($id) {
+    // Remember to send request using x-www-form-urlencoded
+    parse_str(file_get_contents('php://input'),$_PUT);
+    $wine = $_PUT;
+    $sql = "UPDATE wines SET name=:name, grapes=:grapes, country=:country, region=:region, year=:year, description=:description, picture=:picture WHERE id=:id";
+    try {
+      $db = $this->dbh;
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam("name", $wine['name']);
+      $stmt->bindParam("grapes", $wine['grapes']);
+      $stmt->bindParam("country", $wine['country']);
+      $stmt->bindParam("region", $wine['region']);
+      $stmt->bindParam("year", $wine['year']);
+      $stmt->bindParam("description", $wine['description']);
+      $stmt->bindParam("picture", $wine['picture']);
+      $stmt->bindParam("id", $id);
+      $stmt->execute();
+      $db = null;
+      echo json_encode($wine);
+    } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+  }
+  public function destroyAction($id) {
+    $sql = "DELETE FROM wines WHERE id=:id";
+    try {
+      $db = $this->dbh;
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam("id", $id);
+      $stmt->execute();
+      $db = null;
+      echo '{"success":{"text":"Deleted successfully."}}';
+    } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+  }
 }
 
 // Routing Variable
