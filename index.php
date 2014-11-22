@@ -3,6 +3,7 @@
 require 'vendor/autoload.php'; // use PCRE patterns you need Pux\PatternCompiler class.
 use Pux\Executor;
 
+// Get the database connection and return the reference for use
 function getConnection() {
   $dbhost = "localhost";
   $dbuser = "root";
@@ -44,15 +45,37 @@ class WineController {
       echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
   }
+  public function createAction() {
+    $sql = "INSERT INTO wines (name, grapes, country, region, year, description) VALUES (:name, :grapes, :country, :region, :year, :description)";
+    try {
+      $db = $this->dbh;
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam("name", $_POST['name']);
+      $stmt->bindParam("grapes", $_POST['grapes']);
+      $stmt->bindParam("country", $_POST['country']);
+      $stmt->bindParam("region", $_POST['region']);
+      $stmt->bindParam("year", $_POST['year']);
+      $stmt->bindParam("description", $_POST['description']);
+      $stmt->execute();
+      $wine->id = $db->lastInsertId();
+      $db = null;
+      echo json_encode($wine);
+    } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+  }
 }
 
 // Routing Variable
 $mux = new Pux\Mux;
 
 // WineController Routings
-$mux->add('/', ['WineController', 'indexAction']);
-$mux->add('/wines', ['WineController', 'indexAction']);
-$mux->add('/wines/:id', ['WineController', 'showAction']);
+$mux->get('/', ['WineController', 'indexAction']);
+$mux->get('/wines', ['WineController', 'indexAction']);
+$mux->get('/wines/:id', ['WineController', 'showAction']);
+$mux->post('/wines', ['WineController', 'createAction']);
+$mux->put('/wines/:id', ['WineController', 'updateAction']);
+$mux->delete('/wines/:id', ['WineController', 'destroyAction']);
 
 // General Stuff for starting Pux application
 if (!isset($_SERVER['PATH_INFO'])) {
