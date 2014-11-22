@@ -3,62 +3,61 @@
 require 'vendor/autoload.php'; // use PCRE patterns you need Pux\PatternCompiler class.
 use Pux\Executor;
 
-//require 'rb.php';
-//R::setup('sqlite:tmp/pux.db');
-//R::setup('mysql:host=localhost;dbname=pux_test',
-//        'root','diehard4');
+function getConnection() {
+  $dbhost = "localhost";
+  $dbuser = "root";
+  $dbpass = "diehard4";
+  $dbname = "pux_test";
+  $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+  $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  return $dbh;
+}
 
-$mysqli = mysqli_connect("localhost", "root", "diehard4", "pux_test");
-
-class ProductController {
+// Wine Controller
+class WineController {
+  public function __construct() {
+    $this->dbh = getConnection();
+  }
   public function indexAction() {
-    //echo 'Index Action';
-    //$post = R::dispense('post');
-    //$post->text = 'Hello World';
-
-    //$id = R::store($post);       //Create or Update
-    //$post = R::load('post',$id); //Retrieve
-    //R::trash($post);             //Delete
-
-    $arr = array(
-      'name' => 'Piyush',
-      'age'  => 24
-    );
-
-    //echo json_encode($arr);
-    //echo json_encode($post->export());
-    global $mysqli;
-    $res = mysqli_query($mysqli, "SELECT * FROM posts");
-    $posts = array();
-    while($row = mysqli_fetch_assoc($res)) {
-      $posts[] = $row;
+    $sql = "select * FROM wines ORDER BY name";
+    try {
+      $db = $this->dbh;
+      $stmt = $db->query($sql);
+      $wines = $stmt->fetchAll(PDO::FETCH_OBJ);
+      $db = null;
+      echo '{"wines": ' . json_encode($wines) . '}';
+    } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
-
-    // Works only if mysqlnd is present
-    //$posts = mysqli_fetch_all($res, MYSQLI_ASSOC);
-
-    echo json_encode($posts);
-
   }
-  public function listAction() {
-    echo 'product list';
-  }
-  public function itemAction($id) {
-    echo "product $id";
+  public function showAction($id) {
+    $sql = "SELECT * FROM wines WHERE id=:id";
+    try {
+      $db = $this->dbh;
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam("id", $id);
+      $stmt->execute();
+      $wine = $stmt->fetchObject();
+      $db = null;
+      echo json_encode($wine);
+    } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
   }
 }
+
+// Routing Variable
 $mux = new Pux\Mux;
-$mux->add('/', ['ProductController','indexAction']);
-$mux->add('/product', ['ProductController','listAction']);
-$mux->add('/product/:id', ['ProductController','itemAction'] , [
-  'require' => [ 'id' => '\d+', ],
-  'default' => [ 'id' => '1', ]
-]);
+
+// WineController Routings
+$mux->add('/', ['WineController', 'indexAction']);
+$mux->add('/wines', ['WineController', 'indexAction']);
+$mux->add('/wines/:id', ['WineController', 'showAction']);
+
+// General Stuff for starting Pux application
 if (!isset($_SERVER['PATH_INFO'])) {
   $route = $mux->dispatch('/');
 } else {
   $route = $mux->dispatch($_SERVER['PATH_INFO']);
 }
 Executor::execute($route);
-
-//R::close();
