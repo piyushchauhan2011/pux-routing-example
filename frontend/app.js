@@ -8,7 +8,12 @@ $(function() {
         dataType: "json", // data type of response
         //success: renderList
         success: function(data) {
-          console.log(data);
+          var wines = data['wines'];
+          var winesEl = $('#wines');
+          winesEl.html('');
+          wines.forEach(function(wine) {
+            winesEl.append('<li role="presentation"><a href="#">' + wine.name + '</a></li>');
+          });
         }
       });
     },
@@ -85,14 +90,15 @@ $(function() {
     // Helper function to serialize all the form fields into a JSON string
     formToJSON: function() {
       return JSON.stringify({
-        "id": $('#id').val(),
-        "name": $('#name').val(),
-        "grapes": $('#grapes').val(),
-        "country": $('#country').val(),
-        "region": $('#region').val(),
-        "year": $('#year').val(),
-        "description": $('#description').val()
+        "id": $('#wine_id').val(),
+        "name": $('#wine_name').val(),
+        "grapes": $('#wine_grapes').val(),
+        "country": $('#wine_country').val(),
+        "region": $('#wine_region').val(),
+        "year": $('#wine_year').val(),
+        "description": $('#wine_description').val()
       });
     }
   };
+  window.Wine.findAll();
 });
