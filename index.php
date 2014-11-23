@@ -27,7 +27,7 @@ class WineController {
     $this->dbh = getConnection();
   }
   public function indexAction() {
-    $sql = "select * FROM wines ORDER BY name";
+    $sql = "SELECT * FROM wines ORDER BY name";
     try {
       $db = $this->dbh;
       $stmt = $db->query($sql);
