@@ -1,22 +1,128 @@
-<html>
-  <head>
-    <title>Wine Cellar App.</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-  </head>
+<head>
+  <title>Wine Cellar App.</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
-  <body>
-    <h1>Front end for Wine Cellar App using PUX Routing library.</h1>
-    <hr/>
-    <h2>Work in Progress...</h2>
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <style>
+  .starter-template {
+    padding-top: 70px;
+  }
+  .pad-footer {
+    padding-top: 10px;
+  }
+  .pad-content {
+    padding-top: 15px;
+  }
+  </style>
+</head>
 
-    <h3>Credits: Christophe Coenraets</h3>
-    <p>For Initial app and Idea from which I have took most of the code and inspiration.</p>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Wine Cellar</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        <ul class="nav navbar-nav navbar-form">
+          <li>
+            <button class="btn btn-primary">New Wine</button>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </nav>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="frontend/app.js"></script>
-  </body>
+  <div class="container">
+    <div class="starter-template">
+      <div class="row">
+        <div class="col-md-3">
+          <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active"><a href="#">First Wine</a>
+            </li>
+            <li role="presentation"><a href="#">Second Wine</a>
+            </li>
+            <li role="presentation"><a href="#">Third Wine</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <form role="form">
+            <div class="form-group">
+              <label for="wine_id">Id</label>
+              <input type="text" class="form-control" id="wine_id" placeholder="Wine Id">
+            </div>
+            <div class="form-group">
+              <label for="wine_name">Name</label>
+              <input type="text" class="form-control" id="wine_name" placeholder="Wine Name">
+            </div>
+            <div class="form-group">
+              <label for="wine_grapes">Grapes</label>
+              <input type="text" class="form-control" id="wine_grapes" placeholder="Wine Grapes">
+            </div>
+            <div class="form-group">
+              <label for="wine_country">Country</label>
+              <input type="text" class="form-control" id="wine_country" placeholder="Wine Country">
+            </div>
+            <div class="form-group">
+              <label for="wine_region">Region</label>
+              <input type="text" class="form-control" id="wine_region" placeholder="Wine Region">
+            </div>
+            <div class="form-group">
+              <label for="wine_year">Year</label>
+              <input type="text" class="form-control" id="wine_year" placeholder="Wine Year">
+            </div>
+            <button id="wine_submit" class="btn btn-success">Save</button>
+            <button id="wine_delete" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+        <div class="col-md-4 col-md-offset-1">
+          <div class="row text-center">
+            <img src="pics/cheongju.jpg" alt="Wine Image" class="img-thumbnail">
+          </div>
+          <hr/>
+          <div class="row">
+            <label for="wine_description">Notes</label>
+            <textarea class="form-control" id="wine_description" rows="6" placeholder="Wine Description"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container pad-footer">
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Credits: Christophe Coenraets</h3>
+      </div>
+      <div class="col-md-8 pad-content">
+        <p>
+          For Initial app and Idea from which I have took most of the code and inspiration.<br/>
+          Link for original article.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="frontend/app.js"></script>
+</body>
+
 </html>

@@ -14,6 +14,13 @@ function getConnection() {
   return $dbh;
 }
 
+// Index Controller
+class IndexController {
+  public function indexAction() {
+    include "frontend/index.html";
+  }
+}
+
 // Wine Controller
 class WineController {
   public function __construct() {
@@ -121,7 +128,7 @@ class WineController {
 $mux = new Pux\Mux;
 
 // WineController Routings
-$mux->get('/', ['WineController', 'indexAction']);
+$mux->get('/', ['IndexController', 'indexAction']);
 $mux->get('/wines', ['WineController', 'indexAction']);
 $mux->get('/wines/:id', ['WineController', 'showAction']);
 $mux->post('/wines', ['WineController', 'createAction']);
