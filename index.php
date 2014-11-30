@@ -25,6 +25,7 @@ class IndexController {
 class WineController {
   public function __construct() {
     $this->dbh = getConnection();
+    header('Content-Type: application/json');
   }
   public function indexAction() {
     $sql = "SELECT * FROM wines ORDER BY name";
